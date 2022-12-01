@@ -1,0 +1,8 @@
+{
+  "name": "@ndl/enemy-consumer",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "dependencies": {
+    "@nestjs/axios": "^1.0.0"
+  }
+}
