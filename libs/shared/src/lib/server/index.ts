@@ -8,3 +8,4 @@ export * from './towersEvent';
 export * from './user';
 export * from './userLeft.type';
 export * from './userJoined.type';
+export * from './api';
