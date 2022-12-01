@@ -18,5 +18,5 @@ export interface Enemy {
   speed: number;
   sprite: string; // path to sprite
   description: string;
-  wikipediaLink: string;
+  externalResourceLink: string;
 }
