@@ -1,16 +1,28 @@
 version: '3'
 
 services:
-  postgres:
+  tower_postgres:
     image: bitnami/postgresql:14.6.0
     environment:
       - POSTGRESQL_USERNAME=postgres
       - POSTGRESQL_PASSWORD=postgres
       - POSTGRESQL_DATABASE=protectator
     volumes:
-      - postgres:/bitnami/postgresql
+      - tower_postgres:/bitnami/postgresql
     ports:
       - 5432:5432
 
+  enemy_postgres:
+    image: bitnami/postgresql:14.6.0
+    environment:
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=protectator
+    volumes:
+      - enemy_postgres:/bitnami/postgresql
+    ports:
+      - 5433:5433
+
 volumes:
-  postgres:
+  tower_postgres:
+  enemy_postgres:
