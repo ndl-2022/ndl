@@ -1,0 +1,16 @@
+name: Commit Message Check
+on: [push]
+
+env:
+  error_msg: |+
+    See the document below for help on formatting commits for the project.
+    https://www.conventionalcommits.org/en/v1.0.0/#specification
+jobs:
+  commit-message-check:
+    runs-on: ubuntu-latest
+    name: Commit Message Check
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check Conventional Commits
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'force-skip-ci') && ( success() || failure() ) }}
+        uses: webiny/action-conventional-commits@v1.0.3
