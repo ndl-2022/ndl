@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@ndl/auth-provider": ["libs/auth-provider/src/index.ts"],
+      "@ndl/logging": ["libs/logging/src/index.ts"],
       "@ndl/shared": ["libs/shared/src/index.ts"]
     }
   },
