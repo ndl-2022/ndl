@@ -1,0 +1,12 @@
+name: Clean Code
+on: [push]
+
+jobs:
+  clean-code-check:
+    runs-on: ubuntu-latest
+    name: Clean Code Check
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Linters
+        uses: wearerequired/lint-action@v2.1.0
+
