@@ -1,4 +1,4 @@
-import { Tower } from '@ndl/shared';
+import { Tower, UserRole } from '@ndl/shared';
 import { Application, Graphics } from 'pixi.js';
 import UsernameMenu from '../menus/UsernameMenu';
 import TowerModal from '../modals/towerModal';
@@ -10,6 +10,8 @@ import RoomMenu from '../menus/RoomMenu';
 import React, { useEffect } from 'react';
 import { GAME_HEIGHT, GAME_WIDTH } from '../lib/game/position';
 import { GameState } from '../lib/game/state';
+import { connect, onJoin, sendJoinRoom } from '@ndl/websocketclient';
+import { Socket } from 'socket.io-client';
 
 const app = new Application({
   width: GAME_WIDTH,
@@ -30,6 +32,7 @@ interface Modals {
 }
 
 export default function Game() {
+  const [socket, setSocket] = React.useState<Socket | undefined>(undefined);
   const [currentMenu, setCurrentMenu] = React.useState<GameMenu>(
     GameMenu.USERNAME
   );
@@ -56,26 +59,29 @@ export default function Game() {
       container.appendChild(app.view as HTMLCanvasElement);
       app.start();
 
+      const roomsocket = connect('http://localhost:4000/');
+      onJoin(roomsocket, handleUserJoin);
+      setSocket(roomsocket);
+
       return () => {
         app.stop();
         container.removeChild(app.view as unknown as Node);
-        console.log('unmount');
       };
     }
     return undefined;
   }, []);
 
+  const handleUserJoin = setUsers;
+
   const handleSetUsername = (username: string) => {
-    setUsers([...users, { username }]);
+    setUsers([...users, { username, role: UserRole.Male }]);
     setCurrentMenu(GameMenu.ROOM);
   };
 
   const handleJoinRoomQuit = (roomCode: string) => {
-    setCurrentMenu(GameMenu.WAITINGROOM);
-  };
-
-  const handleCreateRoom = () => {
-    // TODO : send request to backend to create room
+    if (socket) {
+      sendJoinRoom(socket, { room: roomCode, username: users[0].username });
+    }
     setCurrentMenu(GameMenu.WAITINGROOM);
   };
 
@@ -92,12 +98,7 @@ export default function Game() {
       case GameMenu.USERNAME:
         return <UsernameMenu onSubmit={handleSetUsername} />;
       case GameMenu.ROOM:
-        return (
-          <RoomMenu
-            onJoinRoom={handleJoinRoom}
-            onCreateRoom={handleCreateRoom}
-          />
-        );
+        return <RoomMenu onJoinRoom={handleJoinRoom} />;
       case GameMenu.WAITINGROOM:
         return <WaitingRoomMenu users={users} onReady={handleReady} />;
       case GameMenu.JOINROOM:
