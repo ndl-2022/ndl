@@ -44,6 +44,15 @@ export class EnemyEntity extends Model {
     },
     allowNull: false,
   })
+  declare reward: number;
+
+  @Column({
+    type: DataType.INTEGER,
+    validate: {
+      min: 1,
+    },
+    allowNull: false,
+  })
   declare speed: number;
 
   @Column({

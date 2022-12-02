@@ -5,6 +5,7 @@ export interface Tower {
   damage: number;
   attackSpeed: number;
   slowness: number;
+  cost: number;
   damageType: TowerDamageType;
   maxAttackRange: number;
   maxDamage: number;
