@@ -10,8 +10,14 @@ import RoomMenu from '../menus/RoomMenu';
 import React, { useEffect } from 'react';
 import { GAME_HEIGHT, GAME_WIDTH } from '../lib/game/position';
 import { GameState } from '../lib/game/state';
-import { connect, onJoin, sendJoinRoom } from '@ndl/websocketclient';
+import {
+  connect,
+  onJoin,
+  sendJoinRoom,
+  sendPlaceTower,
+} from '@ndl/websocketclient';
 import { Socket } from 'socket.io-client';
+import { Button } from '@mui/material';
 
 const app = new Application({
   width: GAME_WIDTH,
@@ -27,6 +33,7 @@ enum GameMenu {
   GAME,
 }
 
+const game = new GameState();
 interface Modals {
   tower: boolean;
 }
@@ -43,14 +50,6 @@ export default function Game() {
 
   useEffect(() => {
     if (containerRef.current) {
-      const app = new Application({
-        width: 3200,
-        height: 1600,
-        backgroundColor: 0x1099bb,
-      });
-
-      const game = new GameState();
-
       app.stage.addChild(game.getGlobalContainer());
       console.log(game.getGlobalContainer());
 
@@ -110,12 +109,31 @@ export default function Game() {
     }
   };
 
+  const handleAddTower = async () => {
+    if (!socket) return;
+    const pos = await game.getTowerPlacement();
+
+    sendPlaceTower(socket, {
+      towerType: 'test',
+      x: pos.x,
+      y: pos.y,
+    });
+  };
+
   return (
     <>
-      <div className="modal-container">
-        {getCurrentMenu()}
-        {modals.tower && tower && <TowerModal tower={tower} />}
-      </div>
+      {!(currentMenu === GameMenu.GAME) ? (
+        <div className="modal-container">
+          {getCurrentMenu()}
+          {modals.tower && tower && <TowerModal tower={tower} />}
+        </div>
+      ) : (
+        <div style={{ position: 'absolute' }}>
+          <Button variant="contained" onClick={handleAddTower}>
+            Add tower
+          </Button>
+        </div>
+      )}
       <div ref={containerRef} className={'game-container'} />
     </>
   );

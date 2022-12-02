@@ -7,6 +7,7 @@ import {
 import { Socket } from 'socket.io-client';
 
 export function sendPlaceTower(socket: Socket, request: PlaceTower) {
+  console.log('sendPlaceTower', request);
   socket.emit(ClientMessageType.PlaceTower, request);
 }
 
