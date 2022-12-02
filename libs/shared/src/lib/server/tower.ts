@@ -6,6 +6,7 @@ export interface Tower {
   attackSpeed: number;
   slowness: number;
   damageType: TowerDamageType;
+  sprite: string;
 
   maxAttackRange: number;
   maxDamage: number;
