@@ -12,7 +12,9 @@ import {
   UserRole,
   Enemy,
   EnemyInstance,
+  Tower,
 } from '@ndl/shared';
+import { TowerConsumerService } from '@ndl/tower-consumer';
 import { NotImplementedException } from '@nestjs/common';
 import { Socket } from 'socket.io';
 import * as Timer from 'timer-machine';
@@ -663,10 +665,12 @@ export class WebsocketProviderService {
   private roomCode = '';
   private gameData = new GameData();
   private enemies: Enemy[] = [];
+  private towers: Tower[] = [];
   private deadThisTickEnemies: string[] = [];
 
   constructor(
     private readonly enemyConsumerService: EnemyConsumerService,
+    private readonly towerConsumerService: TowerConsumerService,
     private readonly websocketProviderGateway: WebsocketProviderGateway,
     private readonly serverRoom: ServerRoom
   ) {
@@ -797,8 +801,8 @@ export class WebsocketProviderService {
   }
 
   async startGame() {
-    debugger;
     this.enemies = await this.enemyConsumerService.getEnemies();
+    this.towers = await this.towerConsumerService.getAllTowers();
 
     this.gameData.gameState.started = true;
     this.gameData.gameState.paused = false;

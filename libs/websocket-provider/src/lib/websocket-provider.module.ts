@@ -1,19 +1,20 @@
 import { EnemyConsumerModule, EnemyConsumerService } from '@ndl/enemy-consumer';
 import { ServerRoom } from '@ndl/shared';
+import { TowerConsumerModule, TowerConsumerService } from '@ndl/tower-consumer';
 import { Module } from '@nestjs/common';
 import { WebsocketProviderGateway } from './websocket-provider.gateway';
 import { WebsocketProviderGuard } from './websocket-provider.guard';
 import { WebsocketProviderService } from './websocket-provider.service';
 
 @Module({
-  imports: [EnemyConsumerModule],
+  imports: [EnemyConsumerModule, TowerConsumerModule],
   controllers: [],
   providers: [
     WebsocketProviderGateway,
     WebsocketProviderGuard,
     {
       provide: 'WEBSOCKET_HANDLER_FACTORY',
-      useFactory: (enemyConsumerService) => {
+      useFactory: (enemyConsumerService, towerConsumerService) => {
         return {
           create: function (
             websocketProviderGateway: WebsocketProviderGateway,
@@ -21,13 +22,14 @@ import { WebsocketProviderService } from './websocket-provider.service';
           ) {
             return new WebsocketProviderService(
               enemyConsumerService,
+              towerConsumerService,
               websocketProviderGateway,
               room
             );
           },
         };
       },
-      inject: [EnemyConsumerService],
+      inject: [EnemyConsumerService, TowerConsumerService],
     },
   ],
   exports: [WebsocketProviderGateway, WebsocketProviderGuard],

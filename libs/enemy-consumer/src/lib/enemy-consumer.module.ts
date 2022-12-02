@@ -5,7 +5,7 @@ import { HttpModule } from '@nestjs/axios';
 @Module({
   controllers: [],
   providers: [EnemyConsumerService],
-  exports: [],
+  exports: [EnemyConsumerService],
   imports: [
     HttpModule.register({
       baseURL: process.env.ENEMY_API_URL || 'http://localhost:3333',
