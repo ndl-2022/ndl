@@ -17,9 +17,9 @@ export class EnemyConsumerService {
   async getEnemies() {
     return await (
       await firstValueFrom(
-        this.httpService.get<Response<EnemyEntity>>('/enemy')
+        this.httpService.get<Response<EnemyEntity[]>>('/enemy')
       )
-    ).data;
+    ).data.data;
   }
 
   /**

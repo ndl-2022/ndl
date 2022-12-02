@@ -4,8 +4,8 @@ export enum ServerMessageType {
   UserLeft = 'userJoined',
   Enemies = 'enemies', // { enemies: Enemy[], deadEnemies: Enemy[] }
   NewEnemyInfo = 'newEnemyInfo', // { name: string, description: string, wikiLink: string }
-  Towers = 'towers',
   GameState = 'gameState', // { gold: number, health: number, wave: number }
   Attack = 'attack',
   Pause = 'pause',
+  MapState = 'mapState',
 }
