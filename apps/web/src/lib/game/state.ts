@@ -53,6 +53,27 @@ export class GameState {
     return this.globalContainer;
   }
 
+  async getTowerPlacement() {
+    return new Promise<{ x: number; y: number }>((resolve) => {
+      this.tiles.forEach((row, x) => {
+        row.forEach((tile, y) => {
+          if (!tile.tower) {
+            // unregister everything
+            this.tiles.forEach((row) => {
+              row.forEach((tile) => {
+                tile.sprite.interactive = false;
+              });
+            });
+
+            tile.getSprite().on('click', () => {
+              resolve({ x, y });
+            });
+          }
+        });
+      });
+    });
+  }
+
   // merge with the new state
   mergeEnemies(enemies: EnemyInstance[], enemiesToRemove: string[]) {
     enemiesToRemove.forEach((id) => this.removeEnemy(id));
