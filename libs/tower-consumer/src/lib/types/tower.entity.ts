@@ -1,4 +1,5 @@
 export class TowerEntity {
+  id: string;
   sex: TowerSex;
   attackRange: number;
   damage: number;

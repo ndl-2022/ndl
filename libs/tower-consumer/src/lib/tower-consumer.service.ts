@@ -16,9 +16,9 @@ export class TowerConsumerService {
    */
   async getAllTowers() {
     const res = await firstValueFrom(
-      this.httpService.get<Response<TowerEntity>>(this.apiRoot + '/towers')
+      this.httpService.get<Response<TowerEntity[]>>(this.apiRoot + '/towers')
     );
-    return res.data;
+    return res.data.data;
   }
 
   /**

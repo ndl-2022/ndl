@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { EnemyEntity, Response } from '@ndl/shared';
+import { Response } from '@ndl/shared';
 import { firstValueFrom } from 'rxjs';
 import { createEnemyBody } from './types/create.enemy.body';
 import { updateEnemyBody } from './types/update.enemy.body';
+import { EnemyEntity } from '@ndl/entities';
 
 @Injectable()
 export class EnemyConsumerService {
