@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { EnemyProviderController } from './enemy-provider.controller';
 import { EnemyProviderService } from './enemy-provider.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { EnemyEntity } from '@ndl/shared';
+import { EnemyEntity } from '@ndl/entities';
 
 @Module({
   controllers: [EnemyProviderController],

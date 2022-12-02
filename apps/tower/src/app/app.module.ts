@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Logger } from '@nestjs/common';
 import { TowerProviderModule } from '@ndl/tower-provider';
-import { TowerEntity } from '@ndl/shared';
+import { TowerEntity } from '@ndl/entities';
 
 @Module({
   imports: [
