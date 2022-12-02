@@ -709,13 +709,13 @@ export class WebsocketProviderService {
     const { username } = data;
     this.serverRoom.users.push({ username, socket });
     socket.join(this.roomCode);
-    if (this.serverRoom.users.length === 0)
+    if (this.serverRoom.users.length === 1)
       this.gameData.users.push({
         username,
         ready: false,
         role: UserRole.Female,
       });
-    else if (this.serverRoom.users.length === 1)
+    else if (this.serverRoom.users.length === 2)
       this.gameData.users.push({ username, ready: false, role: UserRole.Male });
     this._send(
       ServerMessageType.UserJoined,
