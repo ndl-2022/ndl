@@ -18,6 +18,8 @@ import {
 } from '@ndl/websocketclient';
 import { Socket } from 'socket.io-client';
 import { Button } from '@mui/material';
+import { loadEntities } from '../lib/game/sprites';
+import TowerAddModal from '../modals/towerAddModal';
 
 const app = new Application({
   width: GAME_WIDTH,
@@ -36,6 +38,7 @@ enum GameMenu {
 const game = new GameState();
 interface Modals {
   tower: boolean;
+  towerAdd: boolean;
 }
 
 export default function Game() {
@@ -44,12 +47,16 @@ export default function Game() {
     GameMenu.USERNAME
   );
   const [users, setUsers] = React.useState<User[]>([]);
-  const [modals, setModals] = React.useState<Modals>({ tower: false });
+  const [modals, setModals] = React.useState<Modals>({
+    tower: false,
+    towerAdd: false,
+  });
   const [tower, setTower] = React.useState<Tower | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (containerRef.current) {
+      loadEntities();
       app.stage.addChild(game.getGlobalContainer());
       console.log(game.getGlobalContainer());
 
@@ -109,12 +116,17 @@ export default function Game() {
     }
   };
 
-  const handleAddTower = async () => {
+  const showTowerAddModal = () => {
+    setModals({ ...modals, towerAdd: true });
+  };
+
+  const handleAddTower = async (id: string) => {
+    setModals({ ...modals, towerAdd: false });
     if (!socket) return;
     const pos = await game.getTowerPlacement();
 
     sendPlaceTower(socket, {
-      towerType: 'test',
+      towerType: id,
       x: pos.x,
       y: pos.y,
     });
@@ -129,9 +141,10 @@ export default function Game() {
         </div>
       ) : (
         <div style={{ position: 'absolute' }}>
-          <Button variant="contained" onClick={handleAddTower}>
+          <Button variant="contained" onClick={showTowerAddModal}>
             Add tower
           </Button>
+          {modals.towerAdd && <TowerAddModal modalReturn={handleAddTower} />}
         </div>
       )}
       <div ref={containerRef} className={'game-container'} />
