@@ -20,6 +20,7 @@
       "@ndl/enemy-provider": ["libs/enemy-provider/src/index.ts"],
       "@ndl/tower-provider": ["libs/tower-provider/src/index.ts"],
       "@ndl/tower-consumer": ["libs/tower-consumer/src/index.ts"],
+      "@ndl/entities": ["libs/entities/src/index.ts"],
       "@ndl/logging": ["libs/logging/src/index.ts"],
       "@ndl/shared": ["libs/shared/src/index.ts"],
       "@ndl/websocketclient": ["libs/websocketclient/src/index.ts"],

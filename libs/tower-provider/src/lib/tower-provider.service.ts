@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { TowerEntity } from '@ndl/shared';
+import { TowerEntity } from '@ndl/entities';
 import { CreateTowerDTO } from './templates/dtos/create.tower.dto';
 import { UpdateTowerDTO } from './templates/dtos/update.tower.dto';
 import { EmptyResultError } from 'sequelize';

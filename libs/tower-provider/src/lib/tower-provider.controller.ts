@@ -2,13 +2,13 @@ import {
   Controller,
   Delete,
   Get,
-  Patch,
   Post,
   Query,
   Body,
   Put,
 } from '@nestjs/common';
-import { TowerEntity, Response } from '@ndl/shared';
+import { TowerEntity } from '@ndl/entities';
+import { Response } from '@ndl/shared';
 import { TowerProviderService } from './tower-provider.service';
 import { UpdateTowerDTO } from './templates/dtos/update.tower.dto';
 import { CreateTowerDTO } from './templates/dtos/create.tower.dto';

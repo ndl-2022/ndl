@@ -1,4 +1,4 @@
-import { EnemyEntity } from '@ndl/shared';
+import { EnemyEntity } from '@ndl/entities';
 import {
   BadRequestException,
   Body,

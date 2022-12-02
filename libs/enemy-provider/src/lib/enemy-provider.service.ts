@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateEnemyDto } from './templates/dtos/create.enemy.dto';
-import { EnemyEntity } from '@ndl/shared';
+import { EnemyEntity } from '@ndl/entities';
 import { EmptyResultError } from 'sequelize';
 import { UpdateEnemyDto } from './templates/dtos/update.enemy.dto';
 
