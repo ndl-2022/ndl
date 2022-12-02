@@ -1,6 +1,6 @@
 export interface EnemiesEvent {
-  enemies: EnemyInstance[];
-  deadLastTick: EnemyInstance[];
+  enemies: Enemy[];
+  deadEnemies: string[];
 }
 
 export interface EnemyInstance {
