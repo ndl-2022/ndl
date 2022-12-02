@@ -58,7 +58,6 @@ export class GameState {
       this.tiles.forEach((row, x) => {
         row.forEach((tile, y) => {
           // unregister everything and return
-
           const res = () => {
             this.tiles.forEach((row) => {
               row.forEach((tile) => {
@@ -71,8 +70,10 @@ export class GameState {
             resolve({ x, y });
           };
 
+          tile.getSprite().interactive = true;
+
           // register the click
-          tile.getSprite().on('click', res);
+          tile.getSprite().on('click', () => res());
         });
       });
     });
