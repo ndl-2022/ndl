@@ -1,27 +1,17 @@
 import { Enemy, TileType, Tower } from '@ndl/shared';
+import { Assets } from 'pixi.js';
 
 const ErrSpritesNotLoaded = new Error('Sprites not loaded');
 
-let spritesLoaded = true;
+let spritesLoaded = false;
 export const tilesSprites: Record<TileType, string> = {
   base: 'assets/tiles/base.png',
   female: 'assets/tiles/female.png',
   male: 'assets/tiles/male.png',
   path: 'assets/tiles/path.png',
 };
-const towerTypes: Tower[] = [];
-const enemyTypes: Enemy[] = [
-  {
-    id: 'test',
-    health: 100,
-    reward: 10,
-    sprite: 'https://pixijs.io/guides/static/images/sample.png',
-    name: 'Test',
-    speed: 1,
-    description: 'Test',
-    externalResourceLink: 'https://en.wikipedia.org/wiki/Test',
-  },
-];
+let towerTypes: Tower[] = [];
+let enemyTypes: Enemy[] = [];
 
 // Load the entity types and sprites from the server
 export async function loadEntities() {
@@ -29,13 +19,24 @@ export async function loadEntities() {
     return;
   }
 
-  // TODO :
-
   // fetch tower types
+  towerTypes = await fetch('localhost:3333/towers').then((res) => res.json());
   // fetch enemy types
+  enemyTypes = await fetch('localhost:3333/enemy').then((res) => res.json());
   // load tower sprites
+  towerTypes.forEach((tower) => {
+    Assets.load(tower.sprite);
+  });
+
   // load enemy sprites
+  enemyTypes.forEach((enemy) => {
+    Assets.load(enemy.sprite);
+  });
+
   // load tiles sprites
+  Object.values(tilesSprites).forEach((sprite) => {
+    Assets.load(sprite);
+  });
 
   spritesLoaded = true;
 }
