@@ -1,21 +1,16 @@
 import { Tower } from '@ndl/shared';
-import { Application } from 'pixi.js';
-import React from 'react';
+import { Application, Graphics } from 'pixi.js';
 import UsernameMenu from '../menus/UsernameMenu';
 import TowerModal from '../modals/towerModal';
 import { User } from '@ndl/shared';
 
-function pixelToTiles(x: number, y: number) {
-  return [Math.floor(x / 32), Math.floor(y / 16)];
-}
-
-function tilesToPixel(x: number, y: number) {
-  return [x * 32, y * 16];
-}
+import React, { useEffect } from 'react';
+import { GAME_HEIGHT, GAME_WIDTH } from '../lib/game/position';
+import { GameState } from '../lib/game/state';
 
 const app = new Application({
-  width: 3200,
-  height: 1600,
+  width: GAME_WIDTH,
+  height: GAME_HEIGHT,
   backgroundColor: 0x1099bb,
 });
 
@@ -40,8 +35,31 @@ export default function Game() {
   const [tower, setTower] = React.useState<Tower | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (containerRef.current) {
+      const app = new Application({
+        width: 3200,
+        height: 1600,
+        backgroundColor: 0x1099bb,
+      });
+
+      const graphic = new Graphics();
+
+      graphic.beginFill(0xff0000);
+      graphic.drawRect(0, 0, 100, 100);
+      graphic.endFill();
+      graphic.interactive = true;
+
+      const game = new GameState();
+
+      graphic.on('click', () => {
+        game.enemies[0].x += 10;
+      });
+
+      app.stage.addChild(game.getGlobalContainer());
+      console.log(game.getGlobalContainer());
+      app.stage.addChild(graphic);
+
       const container = containerRef.current;
 
       container.appendChild(app.view as HTMLCanvasElement);
@@ -84,7 +102,7 @@ export default function Game() {
         {getCurrentMenu()}
         {modals.tower && tower && <TowerModal tower={tower} />}
       </div>
-      <div ref={containerRef} className={'game-container'} />;
+      <div ref={containerRef} className={'game-container'} />
     </>
   );
 }
