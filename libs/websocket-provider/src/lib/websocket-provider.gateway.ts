@@ -63,7 +63,6 @@ export class WebsocketProviderGateway {
     @MessageBody(new ParseJSON()) joinRoomRequest: JoinRoom,
     @ConnectedSocket() socket: Socket
   ) {
-    socket.emit('testing', 'testing');
     const { room: roomCode } = joinRoomRequest;
     this.createRoomIfDontExist(roomCode);
     const room = this.rooms.find((r) => r.room.code === roomCode);
