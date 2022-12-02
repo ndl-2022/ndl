@@ -1,4 +1,5 @@
 export enum ClientMessageType {
+  JoinRoom = 'joinRoom',
   LeaveRoom = 'leaveRoom',
   PlaceTower = 'placeTower',
   UpgradeTower = 'upgradeTower',

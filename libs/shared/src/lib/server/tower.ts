@@ -13,6 +13,16 @@ export interface Tower {
   maxSlowness: number;
 }
 
+export interface TowerInstance {
+  id: string;
+  type: string;
+
+  currentAttackRange: number;
+  currentDamage: number;
+  currentAttackSpeed: number;
+  currentSlowness: number;
+}
+
 export enum TowerSex {
   MALE = 'male',
   FEMALE = 'female',

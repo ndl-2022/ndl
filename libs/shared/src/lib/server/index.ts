@@ -5,3 +5,6 @@ export * from './newEnemyInfo';
 export * from './room';
 export * from './tower';
 export * from './towersEvent';
+export * from './user';
+export * from './userLeft.type';
+export * from './userJoined.type';
