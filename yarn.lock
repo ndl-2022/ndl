@@ -1624,7 +1624,7 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@nestjs/axios@1.0.0":
+"@nestjs/axios@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@nestjs/axios/-/axios-1.0.0.tgz#832a78525576a32b185946e5068b62eeffba0ce7"
   integrity sha512-DzBIhmBPgPAf/Hf4oHVgNNrcYcmAwV6v1TeZFkEaotO5AtXEfCJ6c07Po4EmylAA0PFp+8+S77PBEcLNEMOCGQ==

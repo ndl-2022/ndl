@@ -45,6 +45,6 @@ export function onPause(socket: Socket, callback: () => void) {
   socket.on(ServerMessageType.Pause, callback);
 }
 
-export function onJoin(socket: Socket, callback: (user: User) => void) {
+export function onJoin(socket: Socket, callback: (user: User[]) => void) {
   socket.on(ServerMessageType.UserJoined, callback);
 }

@@ -28,6 +28,7 @@ import { WebsocketProviderService } from './websocket-provider.service';
 @Injectable()
 export class ParseJSON implements PipeTransform {
   transform(value: string) {
+    return value;
     return JSON.parse(value);
   }
 }

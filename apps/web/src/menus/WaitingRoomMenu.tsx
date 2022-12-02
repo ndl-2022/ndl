@@ -13,7 +13,7 @@ export default function WaitingRoomMenu({
       <Typography variant="h1">Waiting Room</Typography>
       <ul>
         {users.map((user) => (
-          <li>{user.username}</li>
+          <li key={user.username}>{user.username}</li>
         ))}
       </ul>
       <Button disabled={users.length < 2} onClick={onReady}>

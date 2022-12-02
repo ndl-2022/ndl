@@ -1,4 +1,4 @@
-import { Tower } from '@ndl/shared';
+import { Tower, UserRole } from '@ndl/shared';
 import { Application, Graphics } from 'pixi.js';
 import UsernameMenu from '../menus/UsernameMenu';
 import TowerModal from '../modals/towerModal';
@@ -66,22 +66,22 @@ export default function Game() {
       return () => {
         app.stop();
         container.removeChild(app.view as unknown as Node);
-        console.log('unmount');
       };
     }
     return undefined;
   }, []);
 
-  const handleUserJoin = (user: User) => {
-    setUsers([...users, { username: user.username }]);
-  };
+  const handleUserJoin = setUsers;
 
   const handleSetUsername = (username: string) => {
-    setUsers([...users, { username }]);
+    setUsers([...users, { username, role: UserRole.Male }]);
     setCurrentMenu(GameMenu.ROOM);
   };
 
   const handleJoinRoomQuit = (roomCode: string) => {
+    if (socket) {
+      sendJoinRoom(socket, { room: roomCode, username: users[0].username });
+    }
     setCurrentMenu(GameMenu.WAITINGROOM);
   };
 
