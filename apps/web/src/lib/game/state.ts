@@ -57,18 +57,22 @@ export class GameState {
     return new Promise<{ x: number; y: number }>((resolve) => {
       this.tiles.forEach((row, x) => {
         row.forEach((tile, y) => {
-          if (!tile.tower) {
-            // unregister everything
+          // unregister everything and return
+
+          const res = () => {
             this.tiles.forEach((row) => {
               row.forEach((tile) => {
-                tile.sprite.interactive = false;
+                if (!tile.tower) {
+                  tile.sprite.interactive = false;
+                  tile.sprite.off('click', res);
+                }
               });
             });
+            resolve({ x, y });
+          };
 
-            tile.getSprite().on('click', () => {
-              resolve({ x, y });
-            });
-          }
+          // register the click
+          tile.getSprite().on('click', res);
         });
       });
     });
