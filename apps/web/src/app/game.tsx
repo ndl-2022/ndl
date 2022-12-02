@@ -1,13 +1,9 @@
 import { Tower } from '@ndl/shared';
-import { Application, Container, Graphics, Sprite } from 'pixi.js';
-import React, { useEffect, useState } from 'react';
+import { Application } from 'pixi.js';
+import React from 'react';
+import UsernameMenu from '../menus/UsernameMenu';
 import TowerModal from '../modals/towerModal';
-import TowerMenu from '../modals/towerModal';
-
-const sprite = Sprite.from('https://pixijs.io/guides/static/images/sample.png');
-
-const width = 3200;
-const height = 1600;
+import { User } from '@ndl/shared';
 
 function pixelToTiles(x: number, y: number) {
   return [Math.floor(x / 32), Math.floor(y / 16)];
@@ -36,9 +32,12 @@ interface Modals {
 }
 
 export default function Game() {
-  const [currentMenu, setCurrentMenu] = useState<GameMenu>(GameMenu.USERNAME);
-  const [modals, setModals] = useState<Modals>({ tower: false });
-  const [tower, setTower] = useState<Tower | null>(null);
+  const [currentMenu, setCurrentMenu] = React.useState<GameMenu>(
+    GameMenu.USERNAME
+  );
+  const [users, setUsers] = React.useState<User[]>([]);
+  const [modals, setModals] = React.useState<Modals>({ tower: false });
+  const [tower, setTower] = React.useState<Tower | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -57,9 +56,32 @@ export default function Game() {
     return undefined;
   }, []);
 
+  const handleSetUsername = (username: string) => {
+    setUsers([...users, { username }]);
+    setCurrentMenu(GameMenu.ROOM);
+  };
+
+  const getCurrentMenu = () => {
+    switch (currentMenu) {
+      case GameMenu.USERNAME:
+        return <UsernameMenu onSubmit={handleSetUsername} />;
+      case GameMenu.ROOM:
+        return <div>Room</div>;
+      case GameMenu.CREATEROOM:
+        return <div>Create Room</div>;
+      case GameMenu.JOINROOM:
+        return <div>Join Room</div>;
+      case GameMenu.GAME:
+        return <div>Game</div>;
+      default:
+        return <div>Username</div>;
+    }
+  };
+
   return (
     <>
       <div className="modal-container">
+        {getCurrentMenu()}
         {modals.tower && tower && <TowerModal tower={tower} />}
       </div>
       <div ref={containerRef} className={'game-container'} />;
