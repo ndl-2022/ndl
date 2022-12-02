@@ -20,9 +20,9 @@ export async function loadEntities() {
   }
 
   // fetch tower types
-  towerTypes = await fetch('localhost:3333/towers').then((res) => res.json());
+  towerTypes = await fetch('http://localhost:3333/api/towers').then((res) => res.json());
   // fetch enemy types
-  enemyTypes = await fetch('localhost:3334/enemy').then((res) => res.json());
+  enemyTypes = await fetch('http://localhost:3334/api/enemy').then((res) => res.json());
   // load tower sprites
   towerTypes.forEach((tower) => {
     Assets.load(tower.sprite);
