@@ -4,7 +4,7 @@ import {
   GameState,
   NewEnemyInfo,
   ServerMessageType,
-  Tower,
+  Tile,
 } from '@ndl/shared';
 import { Socket } from 'socket.io-client';
 
@@ -22,11 +22,11 @@ export function onNewEnemyInfo(
   socket.on(ServerMessageType.NewEnemyInfo, callback);
 }
 
-export function onTowersUpdate(
+export function onMapStateUpdate(
   socket: Socket,
-  callback: (payload: Tower) => void
+  callback: (payload: Tile[]) => void
 ) {
-  socket.on(ServerMessageType.Towers, callback);
+  socket.on(ServerMessageType.MapState, callback);
 }
 
 export function onGameStateUpdate(

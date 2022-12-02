@@ -46,22 +46,10 @@ export default function Game() {
         backgroundColor: 0x1099bb,
       });
 
-      const graphic = new Graphics();
-
-      graphic.beginFill(0xff0000);
-      graphic.drawRect(0, 0, 100, 100);
-      graphic.endFill();
-      graphic.interactive = true;
-
       const game = new GameState();
-
-      graphic.on('click', () => {
-        game.enemies[0].x += 10;
-      });
 
       app.stage.addChild(game.getGlobalContainer());
       console.log(game.getGlobalContainer());
-      app.stage.addChild(graphic);
 
       const container = containerRef.current;
 
