@@ -1,10 +1,10 @@
-// create room : POST /room
+import { Socket } from 'socket.io';
 
 export interface CreateRoomResponse {
   roomCode: string;
 }
 
-// room code in param, POST request
-export interface JoinRoomRequest {
-  username: string;
+export interface ServerRoom {
+  code: string;
+  users: { username: string; socket: Socket }[];
 }
