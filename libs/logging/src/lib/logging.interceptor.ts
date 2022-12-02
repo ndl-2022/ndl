@@ -11,29 +11,35 @@ import { tap } from 'rxjs/operators';
 // Need to update the interceptor when we can better test it
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-  constructor(private readonly logger: Logger) {}
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const requestType = context.getType();
     if (requestType === 'http') {
       const request = context.switchToHttp().getRequest();
-      this.logger.verbose(`New request on ${request.url}`);
+      Logger.verbose(`New request on ${request.url}`);
       return next.handle().pipe(
         tap(() => {
           const response = context.switchToHttp().getResponse();
-          this.logger.verbose(
+          Logger.verbose(
             `Response for ${request.url}: ${response.statusCode} - ${response.body}`
           );
         })
       );
     } else if (requestType === 'ws') {
       const client = context.switchToWs().getClient();
+      const clientRoom = client.rooms ?? client.rooms[0];
       const data = context.switchToWs().getData();
-      this.logger.verbose(`New request from ${client.id}: ${data}`);
+      Logger.verbose(
+        `New request from ${client.id} room ${clientRoom}: ${
+          data ? data.toString() : ''
+        }`
+      );
       return next.handle().pipe(
         tap(() => {
           const req = context.switchToWs();
-          this.logger.verbose(
-            `Response for ${req.getClient()}: ${req.getData()}`
+          const client = context.switchToWs().getClient();
+          const clientRoom = client.rooms ?? client.rooms[0];
+          Logger.verbose(
+            `Response for ${client.id} room ${clientRoom}: ${req.getData()}`
           );
         })
       );
