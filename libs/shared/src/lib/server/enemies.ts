@@ -1,5 +1,5 @@
 export interface EnemiesEvent {
-  enemies: Enemy[];
+  enemies: EnemyInstance[];
   deadEnemies: string[];
 }
 
