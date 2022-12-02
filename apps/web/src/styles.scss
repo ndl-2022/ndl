@@ -19,3 +19,31 @@ body {
   width: 100%;
   height: 100vh;
 }
+
+// Modal
+
+.modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+// Tower Menu
+
+.tower-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: white;
+}
+
+.tower-infos{
+  
+}
