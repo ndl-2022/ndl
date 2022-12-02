@@ -14,7 +14,7 @@ import { EnemyProviderModule } from '@ndl/enemy-provider';
       port: parseInt(process.env.ENEMY_DB_PORT) || 5432,
       username: process.env.ENEMY_DB_USERNAME || 'postgres',
       password: process.env.ENEMY_DB_PASSWORD || 'postgres',
-      database: process.env.ENEMY_DB_DATABASE || 'protectator',
+      database: process.env.ENEMY_DB_DATABASE || 'postgres',
       models: [],
       autoLoadModels: true,
       logging: process.env.NODE_ENV === 'PRODUCTION' ? false : Logger.debug,

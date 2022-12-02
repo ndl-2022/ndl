@@ -16,7 +16,7 @@ import { TowerEntity } from '@ndl/entities';
       port: parseInt(process.env.TOWER_DB_PORT) || 5432,
       username: process.env.TOWER_DB_USERNAME || 'postgres',
       password: process.env.TOWER_DB_PASSWORD || 'postgres',
-      database: process.env.TOWER_DB_DATABASE || 'protectator',
+      database: process.env.TOWER_DB_DATABASE || 'postgres',
       models: [TowerEntity],
       autoLoadModels: true,
       logging: process.env.NODE_ENV === 'PRODUCTION' ? false : Logger.debug,

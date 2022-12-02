@@ -15,10 +15,12 @@ import {
   Tower,
   TowerInstance,
   PlaceTower,
+  TowerDamageType,
 } from '@ndl/shared';
 import { TowerConsumerService } from '@ndl/tower-consumer';
 import { NotImplementedException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
+import { TowerSex } from 'libs/tower-consumer/src/lib/types/tower.entity';
 import { Socket } from 'socket.io';
 import * as Timer from 'timer-machine';
 import { WebsocketProviderGateway } from './websocket-provider.gateway';
@@ -670,6 +672,7 @@ export class WebsocketProviderService {
   private enemies: Enemy[] = [];
   private towers: Tower[] = [];
   private deadThisTickEnemies: string[] = [];
+  private spawnPoint = { x: 0, y: 9 };
 
   constructor(
     private readonly enemyConsumerService: EnemyConsumerService,
@@ -678,6 +681,32 @@ export class WebsocketProviderService {
     private readonly serverRoom: ServerRoom
   ) {
     this.roomCode = serverRoom.code;
+    Promise.all([
+      this.enemyConsumerService.createEnemy({
+        health: 100,
+        name: 'enemy1',
+        speed: 2,
+        sprite: 'enemy1',
+        reward: 10,
+        description: 'enemy1',
+        externalResourceLink: 'enemy1',
+      }),
+      this.towerConsumerService.createTower({
+        id: randomUUID(),
+        attackRange: 4,
+        attackSpeed: 2,
+        damage: 10,
+        sprite: 'tower1',
+        cost: 10,
+        damageType: TowerDamageType.PHYSICAL,
+        maxAttackRange: 4,
+        maxAttackSpeed: 3,
+        maxDamage: 10,
+        slowness: 0,
+        maxSlowness: 1,
+        sex: TowerSex.MALE,
+      }),
+    ]);
   }
 
   public event<T>(eventType: ClientMessageType, socket: Socket, data?: T) {
@@ -737,6 +766,10 @@ export class WebsocketProviderService {
   }
 
   tick() {
+    // One chance in 10
+    if (Math.random() < 0.1) {
+      const enemy = this.enemyConsumerService.createEnemy(this.enemies[0]);
+    }
     this.deadThisTickEnemies = [];
     this.gameData.enemies = this.gameData.enemies
       .map((enemy) => {
@@ -748,6 +781,17 @@ export class WebsocketProviderService {
     this.sendEnemyState();
     this.sendGameState();
     this.sendMapState();
+  }
+
+  instanciateEnemy(enemy: Enemy) {
+    const enemyInstance: EnemyInstance = {
+      id: randomUUID(),
+      type: enemy.id,
+      health: enemy.health,
+      x: this.spawnPoint.x,
+      y: this.spawnPoint.y,
+    };
+    this.gameData.enemies.push(enemyInstance);
   }
 
   baseHit(damage: number) {

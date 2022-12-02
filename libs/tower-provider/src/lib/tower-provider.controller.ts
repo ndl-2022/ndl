@@ -18,7 +18,7 @@ import { Logger } from '@nestjs/common';
 export class TowerProviderController {
   constructor(private readonly towerService: TowerProviderService) {}
 
-  @Get()
+  @Get('/')
   async getTowers() {
     const res = await this.towerService.getTowers();
     Logger.debug(res);

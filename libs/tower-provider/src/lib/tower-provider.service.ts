@@ -56,26 +56,20 @@ export class TowerProviderService {
    */
   createTower(tower: CreateTowerDTO) {
     Logger.debug(tower);
-    try {
-      return this.towerEntity.create({
-        ...tower,
-        attackRange:
-          tower.attackRange > tower.maxAttackRange
-            ? tower.maxAttackRange
-            : tower.attackRange,
-        attackSpeed:
-          tower.attackSpeed > tower.maxAttackSpeed
-            ? tower.maxAttackSpeed
-            : tower.attackSpeed,
-        damage: tower.damage > tower.maxDamage ? tower.maxDamage : tower.damage,
-        slowness:
-          tower.slowness > tower.maxSlowness
-            ? tower.maxSlowness
-            : tower.slowness,
-      });
-    } catch (e) {
-      throw new Error(e);
-    }
+    return this.towerEntity.create({
+      ...tower,
+      attackRange:
+        tower.attackRange > tower.maxAttackRange
+          ? tower.maxAttackRange
+          : tower.attackRange,
+      attackSpeed:
+        tower.attackSpeed > tower.maxAttackSpeed
+          ? tower.maxAttackSpeed
+          : tower.attackSpeed,
+      damage: tower.damage > tower.maxDamage ? tower.maxDamage : tower.damage,
+      slowness:
+        tower.slowness > tower.maxSlowness ? tower.maxSlowness : tower.slowness,
+    });
   }
 
   /**
