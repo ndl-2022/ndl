@@ -5,6 +5,7 @@ import {
   NewEnemyInfo,
   ServerMessageType,
   Tile,
+  User,
 } from '@ndl/shared';
 import { Socket } from 'socket.io-client';
 
@@ -42,4 +43,8 @@ export function onAttack(socket: Socket, callback: (payload: Attack) => void) {
 
 export function onPause(socket: Socket, callback: () => void) {
   socket.on(ServerMessageType.Pause, callback);
+}
+
+export function onJoin(socket: Socket, callback: (user: User) => void) {
+  socket.on(ServerMessageType.UserJoined, callback);
 }
