@@ -9,3 +9,4 @@ export * from './user';
 export * from './userLeft.type';
 export * from './userJoined.type';
 export * from './api';
+export * from './mapState';
