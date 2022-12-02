@@ -41,7 +41,7 @@ export class ParseJSON implements PipeTransform {
 })
 export class WebsocketProviderGateway {
   @WebSocketServer()
-  private readonly server: Server;
+  private readonly server!: Server;
   private rooms: {
     handler: WebsocketProviderService;
     room: ServerRoom;
@@ -66,7 +66,7 @@ export class WebsocketProviderGateway {
     const { room: roomCode } = joinRoomRequest;
     this.createRoomIfDontExist(roomCode);
     const room = this.rooms.find((r) => r.room.code === roomCode);
-    room.handler.event<JoinRoom>(
+    room?.handler.event<JoinRoom>(
       ClientMessageType.JoinRoom,
       socket,
       joinRoomRequest
@@ -114,7 +114,7 @@ export class WebsocketProviderGateway {
 
   sendToHandler<T>(messageType: ClientMessageType, socket: Socket, data?: T) {
     const room = this.findRoomFromUser(socket);
-    room.handler.event<T>(messageType, socket, data);
+    room?.handler.event<T>(messageType, socket, data);
   }
 
   createRoomIfDontExist(roomCode: string) {
@@ -135,7 +135,7 @@ export class WebsocketProviderGateway {
 
   findUser(socket: Socket) {
     const room = this.findRoom(socket.rooms[0]);
-    return room.room.users.find((u) => u.username === socket.id);
+    return room?.room.users.find((u) => u.username === socket.id);
   }
 
   findRoomFromUser(socket: Socket) {
