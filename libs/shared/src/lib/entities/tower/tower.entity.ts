@@ -39,7 +39,7 @@ export class TowerEntity extends Model {
   @Column({
     type: DataType.INTEGER,
     validate: {
-      min: 0.01,
+      min: 0,
       // TODO: max: maxAttackRange
     },
     allowNull: false,
@@ -49,7 +49,7 @@ export class TowerEntity extends Model {
   @Column({
     type: DataType.INTEGER,
     validate: {
-      min: 0.01,
+      min: 0,
     },
     allowNull: false,
   })
@@ -58,7 +58,7 @@ export class TowerEntity extends Model {
   @Column({
     type: DataType.INTEGER,
     validate: {
-      min: 0.01,
+      min: 0,
       // TODO: only exclude 0
     },
     allowNull: false,
@@ -80,7 +80,7 @@ export class TowerEntity extends Model {
   @Column({
     type: DataType.INTEGER,
     validate: {
-      min: 0.01,
+      min: 0,
     },
     allowNull: false,
   })
@@ -89,7 +89,7 @@ export class TowerEntity extends Model {
   @Column({
     type: DataType.INTEGER,
     validate: {
-      min: 0.01,
+      min: 0,
     },
     allowNull: false,
   })
@@ -98,7 +98,7 @@ export class TowerEntity extends Model {
   @Column({
     type: DataType.INTEGER,
     validate: {
-      min: 0.01,
+      min: 0,
     },
     allowNull: false,
   })

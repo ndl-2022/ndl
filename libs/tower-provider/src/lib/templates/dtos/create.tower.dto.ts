@@ -17,15 +17,15 @@ export class CreateTowerDTO {
   sex: TowerSex;
 
   @IsNumber()
-  @Min(0.01)
+  @Min(0)
   attackRange: number;
 
   @IsNumber()
-  @Min(0.01)
+  @Min(0)
   damage: number;
 
   @IsNumber()
-  @Min(0.01)
+  @Min(0)
   attackSpeed: number;
 
   @IsNumber()
@@ -36,15 +36,15 @@ export class CreateTowerDTO {
   damageType: TowerDamageType;
 
   @IsNumber()
-  @Min(0.01)
+  @Min(0)
   maxAttackRange: number;
 
   @IsNumber()
-  @Min(0.01)
+  @Min(0)
   maxDamage: number;
 
   @IsNumber()
-  @Min(0.01)
+  @Min(0)
   maxAttackSpeed: number;
 
   @IsNumber()
