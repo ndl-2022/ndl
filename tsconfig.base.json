@@ -18,7 +18,8 @@
       "@ndl/auth-provider": ["libs/auth-provider/src/index.ts"],
       "@ndl/logging": ["libs/logging/src/index.ts"],
       "@ndl/shared": ["libs/shared/src/index.ts"],
-      "@ndl/websocketclient": ["libs/websocketclient/src/index.ts"]
+      "@ndl/websocketclient": ["libs/websocketclient/src/index.ts"],
+      "@ndl/websocket-provider": ["libs/websocket-provider/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

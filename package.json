@@ -13,6 +13,8 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@types/pixi.js": "^5.0.0",
+    "@nestjs/platform-socket.io": "^9.2.1",
+    "@nestjs/websockets": "^9.2.1",
     "core-js": "^3.6.5",
     "pixi.js": "^7.0.4",
     "react": "18.2.0",
