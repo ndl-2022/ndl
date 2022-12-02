@@ -14,6 +14,7 @@ export interface EnemyInstance {
 export interface Enemy {
   id: string;
   name: string;
+  reward: number;
   health: number;
   speed: number;
   sprite: string; // path to sprite

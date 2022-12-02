@@ -11,6 +11,10 @@ export class CreateEnemyDto {
 
   @IsNumber()
   @Min(1)
+  declare reward: number;
+
+  @IsNumber()
+  @Min(1)
   declare speed: number;
 
   @IsString()

@@ -13,9 +13,12 @@ import {
   Enemy,
   EnemyInstance,
   Tower,
+  TowerInstance,
+  PlaceTower,
 } from '@ndl/shared';
 import { TowerConsumerService } from '@ndl/tower-consumer';
 import { NotImplementedException } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { Socket } from 'socket.io';
 import * as Timer from 'timer-machine';
 import { WebsocketProviderGateway } from './websocket-provider.gateway';
@@ -689,7 +692,7 @@ export class WebsocketProviderService {
         this.pause();
         break;
       case ClientMessageType.PlaceTower:
-        this._placeTower();
+        this._placeTower(data as PlaceTower, socket);
         break;
       case ClientMessageType.Ready:
         this._ready(socket);
@@ -740,8 +743,11 @@ export class WebsocketProviderService {
         return this.moveEnemy(enemy);
       })
       .filter((enemy) => enemy);
+    this.towerShoot();
 
     this.sendEnemyState();
+    this.sendGameState();
+    this.sendMapState();
   }
 
   baseHit(damage: number) {
@@ -753,12 +759,60 @@ export class WebsocketProviderService {
     }
   }
 
+  enemyDies(enemy: EnemyInstance) {
+    this.deadThisTickEnemies.push(enemy.id);
+    this.gameData.enemies = this.gameData.enemies.filter(
+      (enemy) => enemy.id !== enemy.id
+    );
+    const enemyType = this.enemies.find((e) => e.id === enemy.type);
+    this.gameData.gameState.gold += enemyType.reward;
+  }
+
+  towerShoot() {
+    this.gameData.map.forEach((x: Array<Tile>) => {
+      x.forEach((tile: Tile) => {
+        if (
+          tile.type === TileType.Male ||
+          (tile.type === TileType.Female && tile.tower)
+        ) {
+          const enemy = this.computeClosestEnemy(tile);
+
+          if (enemy) {
+            enemy.health -= tile.tower.currentDamage;
+            if (enemy.health <= 0) {
+              this.enemyDies(enemy);
+            }
+          }
+        }
+      });
+    });
+  }
+
+  computeClosestEnemy(tile: Tile) {
+    const { x, y, tower } = tile;
+    const { currentAttackRange } = tower;
+    const closestEnemy: { enemy: EnemyInstance; distance: number } =
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (this.gameData.enemies as any[]).reduce(
+        (previous, enemy) => {
+          const distance = Math.sqrt(
+            Math.pow(enemy.x - x, 2) + Math.pow(enemy.y - y, 2)
+          );
+          if (distance < currentAttackRange && distance < previous.distance) {
+            return { enemy, distance };
+          }
+        },
+        { enemy: null, distance: Infinity }
+      );
+    return closestEnemy.enemy;
+  }
+
   moveEnemy(enemy: EnemyInstance): EnemyInstance {
     const { x, y } = enemy;
     const type = this.getEnemyType(enemy);
     if (this.gameData.map[x][y].type === TileType.Base) {
       this.baseHit(5);
-      this.deadThisTickEnemies.push(enemy.id);
+      this.enemyDies(enemy);
       return;
     }
     const [up, right, down] = [
@@ -820,6 +874,32 @@ export class WebsocketProviderService {
     this.sendMapState();
   }
 
+  placeTower(tower: PlaceTower, user: UserInstance) {
+    const { x, y } = tower;
+    const tile = this.gameData.map[x][y];
+    if (
+      ((tile.type == TileType.Male && user.role === UserRole.Male) ||
+        (tile.type == TileType.Female && user.role === UserRole.Female)) &&
+      tile.tower === undefined
+    ) {
+      const towerType = this.towers.find((t) => t.id === tower.towerType);
+      if (towerType.cost <= this.gameData.gameState.gold) {
+        tile.tower = {
+          ...towerType,
+          id: randomUUID(),
+          type: tower.towerType,
+          currentDamage: towerType.damage,
+          currentAttackRange: towerType.attackRange,
+          currentAttackSpeed: towerType.attackSpeed,
+          currentSlowness: towerType.slowness,
+        };
+        this.gameData.gameState.gold -= towerType.cost;
+      }
+      this.sendMapState();
+      this.sendGameState();
+    }
+  }
+
   sendGameState() {
     this._send(ServerMessageType.GameState, this.gameData.gameState);
   }
@@ -835,12 +915,20 @@ export class WebsocketProviderService {
     });
   }
 
+  sendAttack(tower: TowerInstance, enemy: EnemyInstance) {
+    this._send(ServerMessageType.Attack, {
+      tower,
+      enemy,
+      damage: tower.currentDamage,
+    });
+  }
+
   _ready(socket: Socket) {
     this.ready(this._socketToUser(socket));
   }
 
-  _placeTower() {
-    throw new NotImplementedException();
+  _placeTower(tower: PlaceTower, socket: Socket) {
+    this.placeTower(tower, this._socketToUser(socket));
   }
 
   _upgradeTower() {

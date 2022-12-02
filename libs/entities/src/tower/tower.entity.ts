@@ -38,6 +38,12 @@ export class TowerEntity extends Model {
 
   @Column({
     type: DataType.INTEGER,
+    allowNull: false,
+  })
+  declare cost: number;
+
+  @Column({
+    type: DataType.INTEGER,
     validate: {
       min: 0,
       // TODO: max: maxAttackRange

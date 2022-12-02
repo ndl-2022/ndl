@@ -14,6 +14,7 @@ const enemyTypes: Enemy[] = [
   {
     id: 'test',
     health: 100,
+    reward: 10,
     sprite: 'https://pixijs.io/guides/static/images/sample.png',
     name: 'Test',
     speed: 1,
