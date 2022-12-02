@@ -17,6 +17,9 @@ export class CreateTowerDTO {
   sex: TowerSex;
 
   @IsNumber()
+  cost: number;
+
+  @IsNumber()
   @Min(0)
   attackRange: number;
 

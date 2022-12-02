@@ -3,6 +3,8 @@ export type createEnemyBody = {
 
   health: number;
 
+  reward: number;
+
   speed: number;
 
   sprite: string; // path to sprite

@@ -8,7 +8,7 @@ import { TowerEntity } from './types/tower.entity';
 export class TowerConsumerService {
   constructor(private readonly httpService: HttpService) {}
 
-  apiRoot = process.env.TOWER_API_URL;
+  apiRoot = process.env.TOWER_API_URL || 'http://localhost:3333/api';
 
   /**
    * It returns a list of towers from the API
