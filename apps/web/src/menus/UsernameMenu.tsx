@@ -8,7 +8,7 @@ export default function UsernameMenu({
 }) {
   const [username, setUsername] = React.useState<string>('');
   return (
-    <Paper className="username-menu-container">
+    <Paper className="menu-container">
       <Stack direction="column" spacing={2}>
         <Typography variant="h1">Protector</Typography>
         <TextField

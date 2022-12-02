@@ -4,6 +4,9 @@ import React from 'react';
 import UsernameMenu from '../menus/UsernameMenu';
 import TowerModal from '../modals/towerModal';
 import { User } from '@ndl/shared';
+import WaitingRoomMenu from '../menus/WaitingRoomMenu';
+import JoinRoomMenu from '../menus/JoinRoomMenu';
+import RoomMenu from '../menus/RoomMenu';
 
 function pixelToTiles(x: number, y: number) {
   return [Math.floor(x / 32), Math.floor(y / 16)];
@@ -22,7 +25,7 @@ const app = new Application({
 enum GameMenu {
   USERNAME,
   ROOM,
-  CREATEROOM,
+  WAITINGROOM,
   JOINROOM,
   GAME,
 }
@@ -61,16 +64,38 @@ export default function Game() {
     setCurrentMenu(GameMenu.ROOM);
   };
 
+  const handleJoinRoomQuit = (roomCode: string) => {
+    setCurrentMenu(GameMenu.WAITINGROOM);
+  };
+
+  const handleCreateRoom = () => {
+    // TODO : send request to backend to create room
+    setCurrentMenu(GameMenu.WAITINGROOM);
+  };
+
+  const handleJoinRoom = () => {
+    setCurrentMenu(GameMenu.JOINROOM);
+  };
+
+  const handleReady = () => {
+    setCurrentMenu(GameMenu.GAME);
+  };
+
   const getCurrentMenu = () => {
     switch (currentMenu) {
       case GameMenu.USERNAME:
         return <UsernameMenu onSubmit={handleSetUsername} />;
       case GameMenu.ROOM:
-        return <div>Room</div>;
-      case GameMenu.CREATEROOM:
-        return <div>Create Room</div>;
+        return (
+          <RoomMenu
+            onJoinRoom={handleJoinRoom}
+            onCreateRoom={handleCreateRoom}
+          />
+        );
+      case GameMenu.WAITINGROOM:
+        return <WaitingRoomMenu users={users} onReady={handleReady} />;
       case GameMenu.JOINROOM:
-        return <div>Join Room</div>;
+        return <JoinRoomMenu onSubmit={handleJoinRoomQuit} />;
       case GameMenu.GAME:
         return <div>Game</div>;
       default:
